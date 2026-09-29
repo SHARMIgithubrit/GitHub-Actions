@@ -6,38 +6,30 @@ on:
   pull_request:
     branches: [ main ]
 
-# Workflow level
+# Workflow level: uses GitHub variable and secret
 env:
   APP_NAME: my-first-app
+  APP_VERSION: ${{ vars.APP_VERSION }}
+  MY_SECRET: ${{ secrets.MY_SECRET }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    # Job level
-    env:
-      JOB_VAR: build-job-value
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Call workflow-level and job-level variables
-      - name: Show workflow and job variables
+      - name: Show GitHub variable
         run: |
-          echo "Workflow variable: $APP_NAME"
-          echo "Job variable: $JOB_VAR"
+          echo "App name: $APP_NAME"
+          echo "App version: $APP_VERSION"
 
-      # Step level: declared and called in the same step
-      - name: Show step variable
-        env:
-          STEP_VAR: step-only-value
+      - name: Show GitHub secret
         run: |
-          echo "Workflow variable: $APP_NAME"
-          echo "Job variable: $JOB_VAR"
-          echo "Step variable: $STEP_VAR"
-
-      # STEP_VAR is not available here
-      - name: Step variable is gone
-        run: |
-          echo "Step variable: [$STEP_VAR]"
+          if [ -z "$MY_SECRET" ]; then
+            echo "Secret is NOT set"
+          else
+            echo "Secret is set"
+          fi
+          echo "Secret value: $MY_SECRET"
