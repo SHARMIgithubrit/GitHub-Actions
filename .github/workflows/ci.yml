@@ -4,6 +4,9 @@ name: Basic CI Workflow
 on:
   push:
     branches: [ main ]
+    
+  pull_request:
+    branches: [ main ]
 
 
 env:
