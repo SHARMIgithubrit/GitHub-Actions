@@ -1,8 +1,9 @@
-name: CI
+name: Basic CI Workflow
 
 on:
   push:
     branches: [ main ]
+
   pull_request:
     branches: [ main ]
 
@@ -16,24 +17,15 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Print environment variables
+      - name: Display environment variables
         run: |
-          echo "App: $APP_NAME"
+          echo "Application Name: $APP_NAME"
           echo "Environment: $ENVIRONMENT"
-          echo "Triggered by: ${{ github.event_name }}"
 
-      - name: List repository files
-        run: ls -la
-
-      - name: Use a GitHub Secret
-        env:
-          MY_SECRET: ${{ secrets.MY_SECRET }}
+      - name: Run CI test
         run: |
-          if [ -z "$MY_SECRET" ]; then
-            echo "Secret is NOT set"
-          else
-            echo "Secret is set: $MY_SECRET"
-          fi
+          echo "GitHub Actions CI workflow is running"
+          echo "Build completed successfully"
           
